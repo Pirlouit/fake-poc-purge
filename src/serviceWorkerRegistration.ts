@@ -168,14 +168,15 @@ async function registerPeriodicSync() {
                 // Register new sync every 24 hours
                 // @ts-ignore
                 await registration.periodicSync.register('update-cached-content', {
-                    minInterval: 24 * 60 * 60 * 1000, // 1 day
+                    minInterval: /*24 * 60 * */ 20 * 1000, // 1 day
                 });
                 logToDashboard('Periodic background sync registered!');
             } catch (e) {
-                console.error(`Periodic background sync failed:\nx${e}`);
+                logToDashboard(`Periodic background sync failed:\nx${e}`);
             }
         } else {
-            console.info('Periodic background sync is not granted.');
+            logToDashboard('Periodic background sync is not granted.');
+            logToDashboard(status.state);
         }
     } else {
         logToDashboard('Periodic background sync is not supported.');
@@ -189,7 +190,7 @@ export function unregister() {
                 registration.unregister();
             })
             .catch((error) => {
-                console.error(error.message);
+                logToDashboard(error.message);
             });
     }
 }
